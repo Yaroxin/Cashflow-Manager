@@ -18,6 +18,42 @@ $( "#addAccountButton" ).click(function() {
     });
 });
 
+$( "#delAccount" ).click(function() {
+    if($(this).data("status") == 0){
+        isDelete = confirm("Удалить счёт?");
+    }
+    if($(this).data("status") == 1){
+        isDelete = confirm("В архив?");
+    }
+    if($(this).data("status") == 2){
+        isDelete = confirm("Активировать счёт?");
+    }
+    
+    if(isDelete){
+        $.ajax({
+            url: "delete-account.php",
+            type: "POST",
+            data: {
+                'accountId': $(this).data("id"),
+                'accountStatus': $(this).data("status")
+            },
+            success: function (response) {
+                result = jQuery.parseJSON(response);
+                if(result == 'Deleted'){
+                    window.location = '/';
+                }else{
+                    document.location.reload();
+                    alert(result);
+                }
+            },
+            error: function (response) {
+                alert('Ошибка');
+            },
+        });
+    }
+});
+
+
 $( "#addIncomeButton" ).click(function() { 
     $('#addIncomeForm').submit(function (e) {
         e.preventDefault();               
@@ -25,6 +61,26 @@ $( "#addIncomeButton" ).click(function() {
             url: "add-income.php",
             type: "POST",
             data: $('#addIncomeForm').serialize(),
+            success: function (response) {
+
+                result = jQuery.parseJSON(response);
+                alert(result);  
+
+            },
+            error: function (response) {
+                alert('Ошибка');
+            },
+        });
+    });
+});
+
+$( "#addExpenseButton" ).click(function() { 
+    $('#addExpenseForm').submit(function (e) {
+        e.preventDefault();               
+        $.ajax({
+            url: "add-expense.php",
+            type: "POST",
+            data: $('#addExpenseForm').serialize(),
             success: function (response) {
 
                 result = jQuery.parseJSON(response);
@@ -47,7 +103,7 @@ function chooseCategory(obj) {
     $('#chooseSubCat').html('');
     $.ajax({
         type: 'POST',
-        url: 'ajax.php',
+        url: '../ajax.php',
         data: {
             'catId': obj.value,
             'table': table
@@ -71,7 +127,7 @@ function chooseCategory(obj) {
 function accChoose(obj) {
     $.ajax({
         type: 'POST',
-        url: 'ajax.php',
+        url: '../ajax.php',
         data: {'accountId': obj.value},
         success: function(data) {
             if(data){

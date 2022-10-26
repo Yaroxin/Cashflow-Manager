@@ -1,23 +1,23 @@
 <?php
-    require "../db.php"; 
-    require "../config.php";
+    require "../../db.php"; 
+    require "../../config.php";
 
     session_start();
 
     if(isset($_SESSION['logged_user'])):
 ?>
 <?php
-    require "userDB.php";
+    require "../userDB.php";
     $accounts = R::findAll('account');
     $incomeCategory = R::findAll('incomecategory');    
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include "head.php"; ?>
+<?php include "../head.php"; ?>
 <body>  
     <div class="wrap">
-        <?php include_once "topBar.php"; ?>
+        <?php include_once "../topBar.php"; ?>
         <form id="addIncomeForm" class="addIncomeForm" action="" method="POST"> 
             <input id="addIncomeDate" class="addIncomeDate" type="date" name="addIncomeDate" value="<?php echo date("Y-m-d")?>" required>       
             
@@ -52,8 +52,8 @@
             <input class="addIncomeButton" id="addIncomeButton" type="submit" name="addIncomeButton" value="Добавить доход">
         </form>
     </div>
-    <script type="text/javascript" src="../scripts/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../scripts/index.js"></script>
 </body>
 </html>
 

@@ -38,6 +38,10 @@
     color: transparent
 }
 
+.hide{
+    display: none;
+}
+
 .errorsBar {
     background-color: rgb(255, 92, 92);
     color: #fff;

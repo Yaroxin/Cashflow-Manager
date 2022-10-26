@@ -29,6 +29,7 @@ if (isset($_POST["accName"]) && isset($_POST["accStartBalance"]) && isset($_POST
         $account['currency_id'] = $_POST["accCurrency"];
         $account['inbalance'] = $inBalance;
         $account['iscredit'] = $isCredit;
+        $account['status'] = 0;
         R::store($account);
 
         $result = 'Счет добавлен!';

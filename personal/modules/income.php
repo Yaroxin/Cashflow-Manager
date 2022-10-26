@@ -1,24 +1,24 @@
 <?php
-    require "../db.php"; 
-    require "../config.php";
-    require "../functions.php";  
+    require "../../db.php"; 
+    require "../../config.php";
+    require "../../functions.php";  
     session_start();    
     if(isset($_SESSION['logged_user'])):
 ?>
 <?php 
-    require "userDB.php";
+    require "../userDB.php";
     $incomes = R::findAll('income');
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include "head.php"; ?>
+<?php include "../head.php"; ?>
 <body>  
     <div class="wrap">
-        <?php include_once "topBar.php"; ?>
+        <?php include_once "../topBar.php"; ?>
         <div class="accBlock">
             <div class="accLogo">
-                <img src="img/coin.png" alt="Logo">
+                <img src="../img/coin.png" alt="Logo">
             </div>
             <div class="accName">Доходы</div>
             <div class="accBalance">&#8381; 2 190 500.00</div>            
@@ -52,8 +52,8 @@
         </div>
         <div id="addIncome" class="addIncome"> <a href="addIncome.php">Добавить</a> </div>
     </div>
-    <script type="text/javascript" src="../scripts/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../scripts/index.js"></script>
 </body>
 </html>
 

@@ -1,24 +1,27 @@
 <?php
-
-require "../db.php";
 session_start();
-require "userDB.php";
+session_destroy();
+header('location: /personal/home.php');
 
-$expenseCategory = R::dispense('expensecategory');
-$expenseCategory['name'] = 'Налоги';
+// require "../db.php";
+// session_start();
+// require "userDB.php";
 
-$expenseSubCategory = R::dispense('expensesubcategory');
-$expenseSubCategory['name'] = 'Транспортный';
-$expenseSubCategory['expensecategory_id'] = 1;
+// $expenseCategory = R::dispense('expensecategory');
+// $expenseCategory['name'] = 'Налоги';
+
+// $expenseSubCategory = R::dispense('expensesubcategory');
+// $expenseSubCategory['name'] = 'Транспортный';
+// $expenseSubCategory['expensecategory_id'] = 1;
 
 // $incomeCategory = R::dispense('incomecategory');
-// $incomeCategory['name'] = 'Налоги';
+// $incomeCategory['name'] = 'Трудовой доход';
 
 // $incomeSubCategory = R::dispense('incomesubcategory');
-// $incomeSubCategory['name'] = 'Транспортный';
+// $incomeSubCategory['name'] = 'Зарплата';
 // $incomeSubCategory['incomecategory_id'] = 1;
 
 // R::store($incomeCategory);
 // R::store($incomeSubCategory);
-R::store($expenseCategory);
-R::store($expenseSubCategory);
+// R::store($expenseCategory);
+// R::store($expenseSubCategory);

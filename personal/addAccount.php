@@ -1,27 +1,44 @@
 <?php
     require "../db.php"; 
     require "../config.php";
-    require "userDB.php";    
+       
 
     session_start();    
     if(isset($_SESSION['logged_user'])):
 ?>
+<?php
+    require "userDB.php"; 
+
+    if($_SESSION['logged_user']['status'] == 'free'){
+        $currencies = R::find('currency', 'status = ?', [$_SESSION['logged_user']['status']]);
+    }
+    if($_SESSION['logged_user']['status'] == 'premium'){
+        $currencies = R::findAll('currency');
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include "head.php"; ?>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <title><?php echo $APP_NAME; ?></title>
+</head>
 <body>  
     <div class="wrap">
         <?php include_once "topBar.php"; ?>
         <form id="addAccountForm" class="addAccountForm" action="" method="POST">
-            <input class="addAccountInput" type="text" name="accName" required placeholder="Название счета" maxlength="64" value="www">
-            <input class="addAccountInput" type="text" name="accStartBalance" required placeholder="Начальный баланс" inputmode="decimal" maxlength="16" value="10000">
+            <input class="addAccountInput" type="text" name="accName" required placeholder="Название счета" maxlength="64">
+            <input class="addAccountInput" type="text" name="accStartBalance" required placeholder="Начальный баланс" inputmode="decimal" maxlength="16">
             <select class="accCurrency" name="accCurrency" id="accCurrency" require>
                 <option value="" disabled selected style='display:none;'>Валюта счета</option>
-                <option value="3">RUB</option>
-                <option value="1">USD</option>
-                <option value="2">EUR</option>
-            </select>
+                    <?php foreach($currencies as $currency): ?>
+                        <option value="<?php echo $currency['id'] ?>"><?php echo $currency['lettcode'] ?></option>
+                    <?php endforeach; ?>             
+             </select>
             <div class="addAccountCheckboxBlock">
                 <input id="inBalance" type="checkbox" name="inBalance" checked>
                 <label for="inBalance">Учитывать в балансе</label>
