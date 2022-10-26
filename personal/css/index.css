@@ -1,0 +1,326 @@
+::-webkit-input-placeholder {
+    font-weight: 100;
+    /* font-style: italic; */
+    color: #808080;
+}
+
+::-moz-placeholder {
+    font-weight: 100;
+    /* font-style: italic; */
+    color: #808080;
+}
+
+:-moz-placeholder {
+    font-weight: 100;
+    /* font-style: italic; */
+    color: #808080;
+}
+
+:-ms-input-placeholder {
+    font-weight: 100;
+    /* font-style: italic; */
+    color: #808080;
+}
+
+:focus::-webkit-input-placeholder {
+    color: transparent
+}
+
+:focus::-moz-placeholder {
+    color: transparent
+}
+
+:focus:-moz-placeholder {
+    color: transparent
+}
+
+:focus:-ms-input-placeholder {
+    color: transparent
+}
+
+.topBar{
+    align-items: center;
+    display: flex;
+    font-size: 18px;
+    padding: 0px 10px;
+    justify-content: space-between;
+    height: 50px;
+}
+
+.mainBlock,
+.accBlock{
+    padding-top: 30px;
+    text-align: center;
+}
+
+.mainLogo,
+.accLogo{
+    margin: 20px auto;
+    height: 48px;
+    width: 48px;
+}
+
+.mainLogo img,
+.accLogo img{
+    width: 100%;
+}
+
+.mainName,
+.accName{
+    font-size: 24px;
+}
+
+.accBalance{
+    font-size: 26px;
+    margin-top: 20px;
+}
+
+.accOptionsBlock{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.mainPages,
+.accPages,
+.incomeFilter{
+    display: flex;
+    justify-content: space-around;
+    padding: 0px 10px;
+    margin: 50px 0px;
+}
+
+.incomeFilter{
+    margin: 30px 0px 15px 0px;
+}
+
+.incomeFilterItem{
+    padding: 3px 6px;
+}
+
+.incomeFilterItemActive{
+    background-color: #808080;
+    color: #fff;
+    font-weight: 700;
+}
+
+.accPages{
+    margin: 50px 0px 10px 0px;
+}
+
+.mainPage{
+    padding: 5px;
+}
+
+.mainPageImg{
+    margin: 0 auto;
+    height: 32px;
+    width: 32px;
+}
+
+.mainPageImg img{
+    width: 100%;
+}
+
+.mainPageName{
+    margin-top: 10px;
+}
+
+.list{
+    border-top: 1px solid #d0d0d0; 
+}
+
+.incomeLineDate{
+    text-align: center;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+.accLine,
+.incomeLineBottom{
+    align-items: center;
+    border-bottom: 1px solid #d0d0d0;
+    display: flex;
+    padding: 10px;
+}
+
+.incomeLineBottom{
+    justify-content: space-between;
+    padding: 0px 10px 15px 10px;
+}
+
+.incomeLineLeft{
+    text-align: left;
+}
+
+.incomeLineRight{
+    text-align: right;
+}
+
+.incomeLineCat,
+.incomeLineSumm{
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.incomeLineSubCat,
+.incomeLineAccount{
+    font-size: 16px;
+}
+
+.accLineImg{
+    margin-right: 30px;
+    width: 48px;
+}
+
+.accLineImg img{
+    width: 100%;
+}
+
+.accLineCenterBlock{
+    font-size: 24px;
+}
+
+.accLineName{
+    font-weight: 700;
+}
+
+.accLineBalance{
+    margin-top: 5px;
+    font-size: 20px;
+}
+
+.accLineRightBlock{
+    margin-left: auto;
+    text-align: right;
+}
+
+.accLineOptionsTop{
+    margin-bottom: 10px;
+}
+
+.addAccount{
+    margin-top: 30px;
+    margin-bottom: 100px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.addAccountInput,
+.accCurrency,
+.addIncomeInput,
+.addIncomeSelect,
+#addIncomeNote,
+#addExpenseNote,
+.addIncomeDate,
+.addExpenseDate,
+.addExpenseCat,
+.addExpenseSubCat,
+.addExpenseSelect,
+.addExpenseInput{
+    border: 1px solid #c7c7c7;
+    color: #808080;
+    display: block;
+    font-size: 20px;
+    margin: 20px auto;
+    padding: 15px 15px;
+    width: 85%;
+}
+
+.addIncomeDate,
+.addExpenseDate{
+    margin-left: 15px;
+    width: 76%;
+}
+
+.addIncomeForm,
+.addExpenseForm{
+    margin: 0 auto;
+    width: 90%;
+}
+
+.addIncomeSelect,
+.addExpenseCat,
+.addExpenseSubCat,
+.addExpenseSelect{
+    margin: 20px 0px 20px 15px;
+}
+
+.addIncomeSummBlock,
+.addExpenseSummBlock{
+    display: flex;
+    justify-content: space-around;
+}
+
+.addIncomeSumm,
+.addExpenseSumm{
+    width: 40%;
+}
+
+.addIncomeCurrency,
+.addExpenseCurrency{
+    width: 12%;
+}
+
+.accCurrency{
+    margin: 20px 0px 20px 15px;
+    width: 50%;
+}
+
+.accCurrency option:first-child{
+    font-style: italic;
+}
+
+.addAccountButton,
+.addIncomeButton,
+.addExpenseButton{
+    -webkit-appearance: none;
+    border: 1px solid #eee;
+    background-color: #808080;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    padding: 15px 50px;
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+.LoginButton:hover {
+    border: 1px solid #bababa;
+}
+
+.addAccountCheckboxBlock{
+    align-items: center;
+    display: flex;
+    padding: 0px 0px 15px 15px;
+    margin-bottom: 20px;
+}
+
+.addAccountCheckboxBlock input{
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+}
+
+#isCredit{
+    margin-left: 10px;
+}
+
+.addAccountCheckboxBlock label{
+    font-size: 20px;
+}
+
+.addIncome{
+    background-color: #808080;
+    color: #fff;
+    padding: 10px 20px;
+    position: absolute;
+    bottom: 70px;
+    right: 30px;
+    font-size: 22px;
+}
+
+#addIncomeNote{
+    resize: none;
+}
