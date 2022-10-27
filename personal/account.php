@@ -6,7 +6,7 @@
 ?>
 <?php 
     require "userDB.php"; 
-    require "../functions.php";
+    require "../functions.php";  
     $account = R::Load('account', $_GET['id']);
 ?>
 
@@ -32,6 +32,9 @@
                 <img src="img/coin.png" alt="Logo">
             </div>
             <div class="accName"><?php echo $account['name']; ?></div>
+            <?php if($account['status'] == 2): ?>        
+            <div class="accStatus">Архивный</div>
+            <?php endif; ?>
             <div class="accBalance"><?php echo $account->currency->htmlcode; ?> <?php echo number_format(getBalance($account['id']), 2, '.', ' '); ?></div>
             <div class="accOptionsBlock">
                 <?php if($account['inbalance'] == 1): ?>
@@ -46,23 +49,77 @@
                 <?php endif; ?>
             </div>
             <div class="accPages">
-                <div class="mainPage mainPageActive">
-                    <div class="mainPageImg">
+                <?php if($_GET['page'] == 'income'): ?>
+                <div id="accIncomesPage" class="accPage accPageActive" data-id="<?php echo $_GET['id']; ?>">
+                <?php else: ?>
+                <div id="accIncomesPage" class="accPage" data-id="<?php echo $_GET['id']; ?>">
+                <?php endif; ?>
+                    <div class="accPageImg">
                         <img src="img/coin.png" alt="page">
                     </div>
-                    <div class="mainPageName">Доходы</div>
+                    <div class="accPageName">Доходы</div>
                 </div>
-                <div class="mainPage">
-                    <div class="mainPageImg">
+                <?php if($_GET['page'] == 'expense'): ?>
+                <div id="accExpensesPage" class="accPage accPageActive" data-id="<?php echo $_GET['id']; ?>">
+                <?php else: ?>
+                <div id="accExpensesPage" class="accPage" data-id="<?php echo $_GET['id']; ?>">
+                <?php endif; ?>
+                    <div class="accPageImg">
                         <img src="img/coin.png" alt="page">
                     </div>
-                    <div class="mainPageName">Расходы</div>
+                    <div class="accPageName">Расходы</div>
                 </div>                
             </div>
         </div>
         <div class="list">
-
-
+        <?php if($_GET['page'] == 'income'): ?>
+            <?php $incomes = R::find('income', 'account_id = ?', [$_GET['id']]); ?>
+            <div id="incomesList" class="incomesList">
+                <?php if($incomes): ?>
+                    <?php foreach($incomes as $income): ?>
+                        <div class="incomeLine">
+                            <div class="incomeLineDate"><?php echo $income['date']; ?></div> 
+                            <div class="incomeLineBottom">
+                                <div class="incomeLineLeft">
+                                    <div class="incomeLineCat"><?php echo $income->incomecategory->name; ?></div>
+                                    <div class="incomeLineSubCat"><?php echo $income->incomesubcategory->name; ?></div>                    
+                                </div>
+                                <div class="incomeLineRight">
+                                    <div class="incomeLineSumm"><?php echo $income->currency->htmlcode; ?> <?php echo $income['summ']; ?></div>
+                                    <div class="incomeLineAccount"><?php echo $income->account->name; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="incomeLine">Нет доходов</div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <?php if($_GET['page'] == 'expense'): ?>
+            <?php $expenses = R::find('expense', 'account_id = ?', [$_GET['id']]); ?>
+            <div id="expensesList" class="expensesList">
+                <?php if($expenses): ?>
+                    <?php foreach($expenses as $expense): ?>
+                        <div class="incomeLine">
+                            <div class="incomeLineDate"><?php echo $expense['date']; ?></div> 
+                            <div class="incomeLineBottom">
+                                <div class="incomeLineLeft">
+                                    <div class="incomeLineCat"><?php echo $expense->expensecategory->name; ?></div>
+                                    <div class="incomeLineSubCat"><?php echo $expense->expensesubcategory->name; ?></div>                    
+                                </div>
+                                <div class="incomeLineRight">
+                                    <div class="incomeLineSumm"><?php echo $expense->currency->htmlcode; ?> <?php echo $expense['summ']; ?></div>
+                                    <div class="incomeLineAccount"><?php echo $expense->account->name; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="incomeLine">Нет расходов</div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
             <?php if($account['status'] == 0): ?>        
             <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >Удалить счет</div>
             <?php endif; ?>
@@ -71,6 +128,9 @@
             <?php endif; ?>
             <?php if($account['status'] == 2): ?>        
             <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >Активировать счет</div>
+            <?php endif; ?>
+            <?php if($account['status'] == 3): ?>        
+            <div class="toArchive">Для архивации нужен нулевой баланс</div>
             <?php endif; ?>
         </div>
     </div>

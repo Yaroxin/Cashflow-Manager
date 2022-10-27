@@ -4,6 +4,7 @@ if (isset($_POST["addIncomeDate"]) && isset($_POST["addIncomeCat"]) && isset($_P
     require "../../db.php";
     session_start();
     require "../userDB.php";
+    require "../../functions.php";
 
     $income = R::dispense('income');
     $income['date'] = $_POST["addIncomeDate"];
@@ -15,9 +16,15 @@ if (isset($_POST["addIncomeDate"]) && isset($_POST["addIncomeCat"]) && isset($_P
     $income['note'] = $_POST["addIncomeNote"];
     R::store($income);
 
-    $account =R::load('account', $_POST["addIncomeAccount"]);
-    $account['status'] = 1;
-    R::store($account);
+    if(getBalance($_POST["addIncomeAccount"]) == 0){
+        $account =R::load('account', $_POST["addIncomeAccount"]);
+        $account['status'] = 1;
+        R::store($account);
+    }else{
+        $account =R::load('account', $_POST["addIncomeAccount"]);
+        $account['status'] = 3;
+        R::store($account);
+    }    
 
     $result = 'Доход добавлен!';
     echo json_encode($result);

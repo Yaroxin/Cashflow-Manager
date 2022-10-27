@@ -18,11 +18,11 @@ function getBalance($account_id){
     $expensesSumm = 0;
 
     foreach($incomes as $income){
-        $incomesSumm = $income['summ'];
+        $incomesSumm += $income['summ'];
     }
 
     foreach($expenses as $expense){
-        $expensesSumm = $expense['summ'];
+        $expensesSumm += $expense['summ'];
     }
 
     return ($account['startbalance'] + $incomesSumm) - $expensesSumm;

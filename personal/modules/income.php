@@ -8,6 +8,7 @@
 <?php 
     require "../userDB.php";
     $incomes = R::findAll('income');
+    $filters = ['All', 'Year', 'Month', 'Week'];
 ?>
 
 <!DOCTYPE html>
@@ -24,10 +25,13 @@
             <div class="accBalance">&#8381; 2 190 500.00</div>            
         </div>
         <div class="incomeFilter">
-            <div class="incomeFilterItem incomeFilterItemActive">All</div>
-            <div class="incomeFilterItem">Year</div>
-            <div class="incomeFilterItem">Month</div>
-            <div class="incomeFilterItem">Week</div>
+            <?php foreach($filters as $filter): ?>
+                <?php if($_GET['filter'] == $filter): ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem incomeFilterItemActive" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php else: ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
         <div class="list">
             <?php if($incomes): ?>

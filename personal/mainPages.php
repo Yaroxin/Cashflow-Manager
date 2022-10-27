@@ -1,7 +1,7 @@
 <div class="mainPages">
     <?php if($_SESSION['logged_user'] != 'free'): ?>
         <?php foreach($modules as $module): ?>
-            <div class="mainPage mainPageActive" onclick="window.location='modules/<?php echo $module['name']; ?>.php'">
+            <div class="mainPage mainPageActive" onclick="window.location='modules/<?php echo $module['name']; ?>.php?filter=All'">
                 <div class="mainPageImg">
                     <img src="img/coin.png" alt="page">
                 </div>

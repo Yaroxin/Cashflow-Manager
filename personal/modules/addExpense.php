@@ -8,7 +8,7 @@
 ?>
 <?php
     require "../userDB.php";
-    $accounts = R::findAll('account');
+    $accounts = R::find('account', 'status != ?', [2]);
     $expenseCategory = R::findAll('expensecategory');    
 ?>
 

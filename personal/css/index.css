@@ -74,6 +74,11 @@
     font-size: 24px;
 }
 
+.accStatus{
+    font-size: 20px;
+    margin-top: 5px;
+}
+
 .accBalance{
     font-size: 26px;
     margin-top: 10px;
@@ -112,21 +117,35 @@
     margin: 50px 0px 10px 0px;
 }
 
-.mainPage{
+.mainPage,
+.accPage{
+    cursor: pointer;
     padding: 5px;
 }
 
-.mainPageImg{
+.accPage{
+    opacity: .5;
+}
+
+.accPageActive{
+    font-weight: 700;
+    opacity: 1;
+}
+
+.mainPageImg,
+.accPageImg{
     margin: 0 auto;
     height: 32px;
     width: 32px;
 }
 
-.mainPageImg img{
+.mainPageImg img,
+.accPage img{
     width: 100%;
 }
 
-.mainPageName{
+.mainPageName,
+.accPageName{
     margin-top: 10px;
 }
 
@@ -330,4 +349,10 @@
 .accStatus-2{
     background-color: #eee;
     opacity: .5;
+}
+
+.toArchive,
+.incomeLine{
+    text-align: center;
+    margin-top: 5px;
 }

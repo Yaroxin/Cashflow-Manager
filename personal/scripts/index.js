@@ -95,7 +95,7 @@ $( "#addExpenseButton" ).click(function() {
 });
 
 $( ".accLine" ).click(function() { 
-    window.location = 'account.php?id=' + $(this).data("id");
+    window.location = 'account.php?id=' + $(this).data("id") + '&page=income';
 });
 
 function chooseCategory(obj) {
@@ -137,4 +137,41 @@ function accChoose(obj) {
             }
         }
     });
+}
+
+$( "#accIncomesPage" ).click(function() {
+    if (history.pushState) {
+        var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        var newUrl = baseUrl + '?id=' + $(this).data("id") +'&page=income';
+        history.pushState(null, null, newUrl);
+        document.location.reload();
+    }
+    else {
+        console.warn('History API не поддерживается');
+    }
+    
+});
+
+$( "#accExpensesPage" ).click(function() {
+    if (history.pushState) {
+        var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        var newUrl = baseUrl + '?id=' + $(this).data("id") +'&page=expense';
+        history.pushState(null, null, newUrl);
+        document.location.reload();
+    }
+    else {
+        console.warn('History API не поддерживается');
+    }
+});
+
+function changeFilter(obj) {
+    if (history.pushState) {
+        var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        var newUrl = baseUrl + '?filter=' + obj.id;
+        history.pushState(null, null, newUrl);
+    }
+    else {
+        console.warn('History API не поддерживается');
+    }
+   document.location.reload();
 }
