@@ -2,24 +2,28 @@
     font-weight: 100;
     /* font-style: italic; */
     color: #808080;
+    opacity: 0.5;
 }
 
 ::-moz-placeholder {
     font-weight: 100;
     /* font-style: italic; */
     color: #808080;
+    opacity: 0.5;
 }
 
 :-moz-placeholder {
     font-weight: 100;
     /* font-style: italic; */
     color: #808080;
+    opacity: 0.5;
 }
 
 :-ms-input-placeholder {
     font-weight: 100;
     /* font-style: italic; */
     color: #808080;
+    opacity: 0.5;
 }
 
 :focus::-webkit-input-placeholder {
@@ -40,6 +44,17 @@
 
 .hide{
     display: none !important;
+}
+
+.sideMenu{
+    background-color: #eee;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90px;
+    height: 360px;
+    z-index: 1;
 }
 
 .topBar{
@@ -118,9 +133,14 @@
 }
 
 .mainPage,
-.accPage{
+.accPage,
+.sidePage{
     cursor: pointer;
     padding: 5px;
+}
+
+.sidePage{
+    margin-top: 15px;
 }
 
 .accPage{
@@ -133,20 +153,29 @@
 }
 
 .mainPageImg,
-.accPageImg{
+.accPageImg,
+.sidePageImg{
     margin: 0 auto;
     height: 32px;
     width: 32px;
 }
 
 .mainPageImg img,
-.accPage img{
+.accPage img,
+.sidePageImg img{
     width: 100%;
 }
 
 .mainPageName,
-.accPageName{
+.accPageName,
+.sidePageName{
     margin-top: 10px;
+    text-align: center;
+}
+
+.sidePageNameClose{
+    font-weight: 700;
+    margin-top: 3px;
 }
 
 .list{
@@ -160,7 +189,8 @@
 }
 
 .accLine,
-.incomeLineBottom{
+.incomeLineBottom,
+.category{
     align-items: center;
     border-bottom: 1px solid #d0d0d0;
     display: flex;
@@ -201,20 +231,24 @@
     width: 100%;
 }
 
-.accLineCenterBlock{
+.accLineCenterBlock,
+.categoryCentralBlock{
     font-size: 18px;
 }
 
-.accLineName{
+.accLineName,
+.categoryName{
     font-weight: 700;
 }
 
-.accLineBalance{
+.accLineBalance,
+.subCategories{
     margin-top: 5px;
     font-size: 16px;
 }
 
-.accLineRightBlock{
+.accLineRightBlock,
+.categoryRightBlock{
     margin-left: auto;
     text-align: right;
     font-size: 14px;
@@ -235,7 +269,8 @@
 .addExpenseCat,
 .addExpenseSubCat,
 .addExpenseSelect,
-.addExpenseInput{
+.addExpenseInput,
+.addCategoryInput{
     border: 1px solid #c7c7c7;
     color: #808080;
     display: block;
@@ -243,6 +278,21 @@
     margin: 20px auto;
     padding: 15px 15px;
     width: 85%;
+}
+
+.addCategoryInput{
+    margin-top: 5px;
+}
+
+.addSubCategoryInput{
+    margin-right: 15px;
+    margin-bottom: 0px;
+    width: 65%;
+}
+
+.addCategoryLabel{
+    font-size: 20px;
+    margin-left: 20px;
 }
 
 .addIncomeDate,
@@ -255,6 +305,17 @@
 .addExpenseForm{
     margin: 0 auto;
     width: 90%;
+}
+
+.addCategoryForm{
+    padding-top: 20px;
+}
+
+.addCategoryTitle{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 20px 0px;
+    text-align: center;
 }
 
 .addIncomeSelect,
@@ -328,18 +389,24 @@
     font-size: 20px;
 }
 
+.button,
 .addAccount,
 .addIncome,
 .addAccountButton,
 .delAccount{
     background-color: #808080;
     color: #fff;
+    display: block;
     padding: 15px 20px;
     font-size: 22px;
     width: 64%;
     margin: 40px auto;
     text-align: center;
     border-radius: 10px;
+}
+
+.disabledButton{
+    opacity: 0.3;
 }
 
 #addIncomeNote{
@@ -355,4 +422,69 @@
 .incomeLine{
     text-align: center;
     margin-top: 5px;
+}
+
+.categoryContent{
+    margin-top: 15px;
+}
+
+.tabs{
+    background-color: #eee;
+    display: flex;
+    justify-content: space-around;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.tab{
+    cursor: pointer;
+    width: 50%;
+    text-align: center;
+    padding: 15px 0px;
+}
+
+.tabActive{
+    background-color: #808080;
+    color: #fff;
+    font-weight: 700;
+}
+
+.checkboxBlock{
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    padding: 0px 20px 20px 20px;
+}
+
+.addSubCategoryButton{
+    height: 32px;
+    width: 32px;
+}
+
+.addSubCategoryButton img{
+    width: 100%;
+}
+
+.addSubCategoryTitle{
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+.addSubCategoryBlock{
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+}
+
+.delSubCategory{
+    position: relative;
+    top: -40px;
+    right: -370px;
+    height: 24px;
+    width: 24px;
+}
+
+.delSubCategory img{
+    width: 100%;
 }

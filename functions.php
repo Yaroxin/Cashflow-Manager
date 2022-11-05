@@ -39,3 +39,7 @@ function getFullBalance(){
 
     return $fullSumm;
 }
+
+function getCategoryList($cat){
+    $categories = R::findAll($cat);
+}

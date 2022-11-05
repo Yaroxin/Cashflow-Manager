@@ -7,7 +7,24 @@
 ?>
 <?php 
     require "../userDB.php";
-    $expenses = R::findAll('expense');
+    
+    if($_GET['filter'] == 'All'){
+        $expenses = R::findAll('expense');
+    }
+    if($_GET['filter'] == 'Year'){
+        $expenses = R::getAll( "SELECT * FROM `expense` WHERE YEAR(date) =" . date("Y"));
+        $expenses = R::convertToBeans('expense', $expenses);
+    }
+    if($_GET['filter'] == 'Month'){
+        $expenses = R::getAll( "SELECT * FROM `expense` WHERE MONTH(date) = " . date("m") . " AND YEAR(date) =" . date("Y") );
+        $expenses = R::convertToBeans('expense', $expenses);
+    }
+    if($_GET['filter'] == 'Week'){
+        $expenses = R::getAll( "SELECT * FROM `expense` WHERE `date` > NOW() - INTERVAL 7 DAY" );
+        $expenses = R::convertToBeans('expense', $expenses);
+    }
+    
+    $filters = ['All', 'Year', 'Month', 'Week'];
 ?>
 
 <!DOCTYPE html>
@@ -24,10 +41,13 @@
             <div class="accBalance">&#8381; 1 190 500.00</div>            
         </div>
         <div class="incomeFilter">
-            <div class="incomeFilterItem incomeFilterItemActive">All</div>
-            <div class="incomeFilterItem">Year</div>
-            <div class="incomeFilterItem">Month</div>
-            <div class="incomeFilterItem">Week</div>
+            <?php foreach($filters as $filter): ?>
+                <?php if($_GET['filter'] == $filter): ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem incomeFilterItemActive" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php else: ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
         <div class="list">
             <?php if($expenses): ?>

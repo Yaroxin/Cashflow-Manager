@@ -8,6 +8,8 @@
     require "userDB.php"; 
     require "../functions.php";  
     $account = R::Load('account', $_GET['id']);
+
+    $filters = ['All', 'Year', 'Month', 'Week'];
 ?>
 
 <!DOCTYPE html>
@@ -50,9 +52,9 @@
             </div>
             <div class="accPages">
                 <?php if($_GET['page'] == 'income'): ?>
-                <div id="accIncomesPage" class="accPage accPageActive" data-id="<?php echo $_GET['id']; ?>">
+                <div id="accIncomesPage" class="accPage accPageActive" data-id="<?php echo $_GET['id']; ?>" onclick="changeAccountPage(this);">
                 <?php else: ?>
-                <div id="accIncomesPage" class="accPage" data-id="<?php echo $_GET['id']; ?>">
+                <div id="accIncomesPage" class="accPage" data-id="<?php echo $_GET['id']; ?>" onclick="changeAccountPage(this);">
                 <?php endif; ?>
                     <div class="accPageImg">
                         <img src="img/coin.png" alt="page">
@@ -60,9 +62,9 @@
                     <div class="accPageName">Доходы</div>
                 </div>
                 <?php if($_GET['page'] == 'expense'): ?>
-                <div id="accExpensesPage" class="accPage accPageActive" data-id="<?php echo $_GET['id']; ?>">
+                <div id="accExpensesPage" class="accPage accPageActive" data-id="<?php echo $_GET['id']; ?>" onclick="changeAccountPage(this);">
                 <?php else: ?>
-                <div id="accExpensesPage" class="accPage" data-id="<?php echo $_GET['id']; ?>">
+                <div id="accExpensesPage" class="accPage" data-id="<?php echo $_GET['id']; ?>" onclick="changeAccountPage(this);">
                 <?php endif; ?>
                     <div class="accPageImg">
                         <img src="img/coin.png" alt="page">
@@ -71,9 +73,37 @@
                 </div>                
             </div>
         </div>
+        <div class="incomeFilter">
+            <?php foreach($filters as $filter): ?>
+                <?php if($_GET['filter'] == $filter): ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem incomeFilterItemActive" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php else: ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
         <div class="list">
+
+
+
         <?php if($_GET['page'] == 'income'): ?>
-            <?php $incomes = R::find('income', 'account_id = ?', [$_GET['id']]); ?>
+            <?php
+                if($_GET['filter'] == 'All'){
+                    $incomes = R::find('income', 'account_id = ?', [$_GET['id']] );
+                }
+                if($_GET['filter'] == 'Year'){
+                    $incomes = R::getAll( "SELECT * FROM `income` WHERE YEAR(date) =" . date("Y") . " AND account_id =" . $_GET['id'] );
+                    $incomes = R::convertToBeans('income', $incomes);
+                }
+                if($_GET['filter'] == 'Month'){
+                    $incomes = R::getAll( "SELECT * FROM `income` WHERE MONTH(date) = " . date("m") . " AND YEAR(date) =" . date("Y") . " AND account_id =" . $_GET['id'] );
+                    $incomes = R::convertToBeans('income', $incomes);
+                }
+                if($_GET['filter'] == 'Week'){
+                    $incomes = R::getAll( "SELECT * FROM `income` WHERE `date` > NOW() - INTERVAL 7 DAY" . " AND account_id =" . $_GET['id']  );
+                    $incomes = R::convertToBeans('income', $incomes);
+                } 
+            ?>
             <div id="incomesList" class="incomesList">
                 <?php if($incomes): ?>
                     <?php foreach($incomes as $income): ?>
@@ -96,8 +126,34 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+
+
+
+
+
+
+
+
+
         <?php if($_GET['page'] == 'expense'): ?>
-            <?php $expenses = R::find('expense', 'account_id = ?', [$_GET['id']]); ?>
+            <?php 
+                if($_GET['filter'] == 'All'){
+                    $expenses = R::find('expense', 'account_id = ?', [$_GET['id']]);
+                }
+                if($_GET['filter'] == 'Year'){
+                    $expenses = R::getAll( "SELECT * FROM `expense` WHERE YEAR(date) =" . date("Y") . " AND account_id =" . $_GET['id'] );
+                    $expenses = R::convertToBeans('expense', $expenses);
+                }
+                if($_GET['filter'] == 'Month'){
+                    $expenses = R::getAll( "SELECT * FROM `expense` WHERE MONTH(date) = " . date("m") . " AND YEAR(date) =" . date("Y") . " AND account_id =" . $_GET['id'] );
+                    $expenses = R::convertToBeans('expense', $expenses);
+                }
+                if($_GET['filter'] == 'Week'){
+                    $expenses = R::getAll( "SELECT * FROM `expense` WHERE `date` > NOW() - INTERVAL 7 DAY" . " AND account_id =" . $_GET['id'] );
+                    $expenses = R::convertToBeans('expense', $expenses);
+                }
+                
+            ?>
             <div id="expensesList" class="expensesList">
                 <?php if($expenses): ?>
                     <?php foreach($expenses as $expense): ?>

@@ -7,7 +7,23 @@
 ?>
 <?php 
     require "../userDB.php";
-    $incomes = R::findAll('income');
+
+    if($_GET['filter'] == 'All'){
+        $incomes = R::findAll('income');
+    }
+    if($_GET['filter'] == 'Year'){
+        $incomes = R::getAll( "SELECT * FROM `income` WHERE YEAR(date) =" . date("Y"));
+        $incomes = R::convertToBeans('income', $incomes);
+    }
+    if($_GET['filter'] == 'Month'){
+        $incomes = R::getAll( "SELECT * FROM `income` WHERE MONTH(date) = " . date("m") . " AND YEAR(date) =" . date("Y") );
+        $incomes = R::convertToBeans('income', $incomes);
+    }
+    if($_GET['filter'] == 'Week'){
+        $incomes = R::getAll( "SELECT * FROM `income` WHERE `date` > NOW() - INTERVAL 7 DAY" );
+        $incomes = R::convertToBeans('income', $incomes);
+    }
+    
     $filters = ['All', 'Year', 'Month', 'Week'];
 ?>
 
