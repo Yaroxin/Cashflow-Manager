@@ -6,8 +6,16 @@
 ?>
 <?php 
     require "userDB.php"; 
-    require "../functions.php";
-    $categories = R::findAll($_GET['cat']);
+    require "../functions.php";  
+    $category = R::Load($_GET['cat'], $_GET['id']);
+    $filters = ['All', 'Year', 'Month', 'Week'];
+
+    if($_GET['cat'] == 'incomecategory'){
+        $table = 'income';
+    }
+    if($_GET['cat'] == 'expensecategory'){
+        $table = 'expense';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -27,38 +35,87 @@
             <div class="topBarCenter">Роман Ярохин</div>
             <div class="topBarRight"><a href="logout.php">Выход</a></div>
         </div>
-        <div class="categoryContent">
-            <div class="tabs">
-                <?php if($_GET['cat'] == 'incomecategory'): ?>
-                <?php $table = 'incomesubcategory'; ?>
-                <div id="categoryIncomeTab" class="tab tabActive" onclick="changeCatTab(this);">Категории доходов</div>
-                <div id="categoryExpenseTab" class="tab" onclick="changeCatTab(this);">Категории расходов</div>
-                <?php elseif($_GET['cat'] == 'expensecategory'): ?>
-                <?php $table = 'expensesubcategory'; ?>
-                <div id="categoryIncomeTab" class="tab" onclick="changeCatTab(this);">Категории доходов</div>
-                <div id="categoryExpenseTab" class="tab tabActive" onclick="changeCatTab(this);">Категории расходов</div>
-                <?php else: ?>
-                <div id="categoryIncomeTab" class="tab" onclick="changeCatTab(this);">Категории доходов</div>
-                <div id="categoryExpenseTab" class="tab" onclick="changeCatTab(this);">Категории расходов</div>
-                <?php endif; ?>
+
+        <div class="accBlock">
+            <div class="accLogo">
+                <img src="img/coin.png" alt="Logo">
             </div>
-            <div class="categoriesList">
-                <?php if($categories): ?>
-                    <?php foreach($categories as $category): ?>
-                        <?php $subCategoryCount = R::count( $table, $_GET['cat'] . '_id  = ?', [$category['id']] ); ?>
-                        <div class="category">
-                            <div class="categoryCentralBlock">
-                                <div class="categoryName"><?php echo $category['name']; ?></div>
-                                <div class="subCategories">Подкатегории: <?php echo $subCategoryCount; ?></div>
+            <div class="accName"><?php echo $category['name']; ?></div>            
+        </div>
+
+        <div class="incomeFilter">
+            <?php foreach($filters as $filter): ?>
+                <?php if($_GET['filter'] == $filter): ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem incomeFilterItemActive" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php else: ?>
+                    <div id="<?php echo $filter; ?>" class="incomeFilterItem" onclick="changeFilter(this);"><?php echo $filter; ?></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="list">
+            <?php
+                if($_GET['filter'] == 'All'){
+                    $transactions = R::find($table, $_GET['cat'] . '_id = ?', [$_GET['id']] );
+                }
+                if($_GET['filter'] == 'Year'){
+                    $transactions = R::getAll( "SELECT * FROM " . $table . " WHERE YEAR(date) =" . date("Y") . " AND " . $_GET['cat'] . "_id =" . $_GET['id'] );
+                    $transactions = R::convertToBeans($_GET['cat'], $transactions);
+                }
+                if($_GET['filter'] == 'Month'){
+                    $transactions = R::getAll( "SELECT * FROM " . $table . " WHERE MONTH(date) = " . date("m") . " AND YEAR(date) =" . date("Y") . " AND " . $_GET['cat'] . "_id =" . $_GET['id'] );
+                    $transactions = R::convertToBeans($_GET['cat'], $transactions);
+                }
+                if($_GET['filter'] == 'Week'){
+                    $transactions = R::getAll( "SELECT * FROM " . $table . " WHERE `date` > NOW() - INTERVAL 7 DAY" . " AND " . $_GET['cat'] . "_id =" . $_GET['id']  );
+                    $transactions = R::convertToBeans($_GET['cat'], $transactions);
+                } 
+            ?>
+            <div id="incomesList" class="incomesList">
+                <?php if($transactions): ?>
+                    <?php foreach($transactions as $transaction): ?>
+                        <div class="incomeLine">
+                            <div class="incomeLineDate"><?php echo $transaction['date']; ?></div> 
+                            <div class="incomeLineBottom">
+                                <div class="incomeLineLeft">
+                                    <?php if($_GET['cat'] == 'incomecategory'): ?>
+                                    <div class="incomeLineCat"><?php echo $transaction->incomecategory->name; ?></div>
+                                    <div class="incomeLineSubCat"><?php echo $transaction->incomesubcategory->name; ?></div> 
+                                    <?php endif; ?>                   
+                                    <?php if($_GET['cat'] == 'expensecategory'): ?>
+                                    <div class="incomeLineCat"><?php echo $transaction->expensecategory->name; ?></div>
+                                    <div class="incomeLineSubCat"><?php echo $transaction->expensesubcategory->name; ?></div> 
+                                    <?php endif; ?>                   
+                                </div>
+                                <div class="incomeLineRight">
+                                    <div class="incomeLineSumm"><?php echo $transaction->currency->htmlcode; ?> <?php echo $transaction['summ']; ?></div>
+                                    <div class="incomeLineAccount"><?php echo $transaction->account->name; ?></div>
+                                </div>
                             </div>
-                            <div class="categoryRightBlock"></div>
                         </div>
                     <?php endforeach; ?>
-                <?php endif; ?>     
-                <div class="button">
-                    <a href="addCategory.php?cat=<?php echo $_GET['cat']; ?>">Добавить категорию</a>
-                </div>           
+                <?php else: ?>
+                    <div class="incomeLine">Нет доходов</div>
+                <?php endif; ?>
             </div>
+
+
+
+        
+            <?php if($category['status'] == 0): ?>        
+            <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >Удалить категорию</div>
+            <?php endif; ?>
+            <?php if($category['status'] == 1): ?>        
+            <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >В архив</div>
+            <?php endif; ?>
+            <?php if($category['status'] == 2): ?>        
+            <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >Активировать</div>
+            <?php endif; ?>
+
+
+
+
+
         </div>
     </div>
     <script type="text/javascript" src="../scripts/jquery-3.6.0.min.js"></script>

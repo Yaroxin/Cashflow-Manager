@@ -11,7 +11,7 @@
     $activeAccounts = R::find('account', 'status != ?', [2]);
     $archiveAccounts = R::find('account', 'status = ?', [2]);
 
-    if ($SHOW_ARCHIVE){
+    if ($SHOW_ARCHIVE_ACCOUNTS){
         $accounts = array_merge($activeAccounts, $archiveAccounts);
     }else{
         $accounts = $activeAccounts;
@@ -47,11 +47,11 @@
                 </div>
                 <div class="sidePageName">Валюты</div>
             </div>
-            <div class="sidePage">
+            <div class="sidePage" onclick="window.location='categories.php?cat=incomecategory'">
                 <div class="sidePageImg">
                     <img src="img/coin.png" alt="sidePageImg">
                 </div>
-                <div class="sidePageName" onclick="window.location='category.php?cat=incomecategory'">Категории</div>
+                <div class="sidePageName">Категории</div>
             </div>
         </div>
         <div class="content">

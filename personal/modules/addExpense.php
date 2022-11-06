@@ -9,7 +9,7 @@
 <?php
     require "../userDB.php";
     $accounts = R::find('account', 'status != ?', [2]);
-    $expenseCategory = R::findAll('expensecategory');    
+    $expenseCategory = R::find('expensecategory', 'status != ?', [2]);    
 ?>
 
 <!DOCTYPE html>

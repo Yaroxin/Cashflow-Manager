@@ -319,3 +319,74 @@ function changeCatTab(obj) {
         console.warn('History API не поддерживается');
     }
 }
+
+function deleteCategory(catId, catTable, subCatTable, table) {
+    let isDelete = confirm("Удалить категорию?");
+    if(isDelete){    
+        $.ajax({
+            type: 'POST',
+            url: 'del-category.php',
+            data: {
+                'categoryId': catId,
+                'catTable': catTable,
+                'subCatTable': subCatTable,
+                'table': table,
+            },
+            success: function (response) {
+                result = jQuery.parseJSON(response);
+                alert(result['message']);
+                document.location.reload();
+            },
+            error: function (response) {
+                alert('Ошибка');
+            },
+        });
+    }
+}
+
+function archCategory(catId, catTable, subCatTable) {
+    let isArchive = confirm("Архивировыть категорию?");
+    if(isArchive){    
+        $.ajax({
+            type: 'POST',
+            url: 'arch-category.php',
+            data: {
+                'categoryId': catId,
+                'catTable': catTable,
+                'subCatTable': subCatTable,
+            },
+            success: function (response) {
+                result = jQuery.parseJSON(response);
+                alert(result['message']);
+                document.location.reload();
+            },
+            error: function (response) {
+                alert('Ошибка');
+            },
+        });
+    }
+}
+
+function actCategory(catId, catTable, subCatTable, table) {
+    let isActivate = confirm("Активировать категорию?");
+    if(isActivate){    
+        $.ajax({
+            type: 'POST',
+            url: 'act-category.php',
+            data: {
+                'categoryId': catId,
+                'catTable': catTable,
+                'subCatTable': subCatTable,
+                'table': table,
+            },
+            success: function (response) {
+                result = jQuery.parseJSON(response);
+                alert(result['message']);
+                document.location.reload();
+            },
+            error: function (response) {
+                alert('Ошибка');
+            },
+        });
+    }
+}

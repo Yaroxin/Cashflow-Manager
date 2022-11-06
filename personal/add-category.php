@@ -11,9 +11,10 @@ if ( isset($_POST["addCategoryName"]) && isset($_POST["addCategoryTable"]) && is
     if($subCategoriesCount == 0){
         $category = R::dispense($_POST["addCategoryTable"]);
         $category['name'] = $_POST["addCategoryName"];
+        $category['status'] = 0;
         R::store($category);
         $response = [
-            'url' => 'category.php?cat=' . $_POST["addCategoryTable"],
+            'url' => 'categories.php?cat=' . $_POST["addCategoryTable"],
             'message' => 'Категория добавлена!',
         ];
     }
@@ -22,6 +23,7 @@ if ( isset($_POST["addCategoryName"]) && isset($_POST["addCategoryTable"]) && is
 
         $category = R::dispense($_POST["addCategoryTable"]);
         $category['name'] = $_POST["addCategoryName"]; 
+        $category['status'] = 0;
         R::store($category);       
 
         if($_POST["addCategoryTable"] == 'incomecategory'){
@@ -39,15 +41,21 @@ if ( isset($_POST["addCategoryName"]) && isset($_POST["addCategoryTable"]) && is
                 $subCategory = R::dispense($tableName);
                 $subCategory['name'] = $_POST["addSubCategory" . $i];
                 $subCategory[$tableId] = $category['id'];
+                $subCategory['status'] = 0;
                 
                 $subCategories [] = $subCategory;
             }
         }
+
+        $response = [
+            'url' => 'categories.php?cat=' . $_POST["addCategoryTable"],
+            'message' => 'Категория добавлена!',
+        ];
     
         if ( !empty($subCategories) ){
             R::storeAll($subCategories);
             $response = [
-                'url' => 'category.php?cat=' . $_POST["addCategoryTable"],
+                'url' => 'categories.php?cat=' . $_POST["addCategoryTable"],
                 'message' => 'Категория и подкатегории добавлены!',
             ];
         }

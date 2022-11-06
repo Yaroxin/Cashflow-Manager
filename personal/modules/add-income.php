@@ -9,12 +9,26 @@ if (isset($_POST["addIncomeDate"]) && isset($_POST["addIncomeCat"]) && isset($_P
     $income = R::dispense('income');
     $income['date'] = $_POST["addIncomeDate"];
     $income['incomecategory_id'] = $_POST["addIncomeCat"];
-    $income['incomesubcategory_id'] = $_POST["addIncomeSubCat"];
+    if($_POST["addIncomeSubCat"]){
+        $income['incomesubcategory_id'] = $_POST["addIncomeSubCat"];
+    }    
     $income['account_id'] = $_POST["addIncomeAccount"];
     $income['summ'] = $_POST["addIncomeSumm"];
     $income['currency_id'] = $_POST["addIncomeCurrencyId"];
     $income['note'] = $_POST["addIncomeNote"];
     R::store($income);
+
+    $category = R::load('incomecategory', $_POST["addIncomeCat"]);
+    $category['status'] = 1;
+    R::store($category);
+
+    $subCategories = R::find('incomesubcategory', 'incomecategory_id = ?', [$_POST["addIncomeCat"]]);
+    if($subCategories){
+        foreach($subCategories as $subCategory){
+            $subCategory['status'] = 1;
+            R::store($subCategory);
+        }        
+    }
 
     if(getBalance($_POST["addIncomeAccount"]) == 0){
         $account =R::load('account', $_POST["addIncomeAccount"]);
