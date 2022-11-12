@@ -50,6 +50,10 @@ img{
     display: none !important;
 }
 
+.archive{
+    opacity: .5;
+}
+
 .sideMenu{
     background-color: #eee;
     display: none;
@@ -76,6 +80,10 @@ img{
     text-align: center;
 }
 
+.accBlock{
+   margin-bottom: 50px;
+}
+
 .mainLogo,
 .accLogo{
     margin: 20px auto;
@@ -91,6 +99,7 @@ img{
 .mainName,
 .accName{
     font-size: 24px;
+    font-weight: 700;
 }
 
 .accStatus{
@@ -514,4 +523,18 @@ img{
 .activateCategory{
     height: 24px;
     width: 24px;
+}
+
+.catStatus{
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.buttonsBlock{
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttonCategory{
+    width: 35%;
 }

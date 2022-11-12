@@ -1,3 +1,9 @@
+function $_GET(key) {
+    var p = window.location.search;
+    p = p.match(new RegExp(key + '=([^&=]+)'));
+    return p ? p[1] : false;
+}
+
 function getGetParam(filter) {
     var params = window
     .location
@@ -320,6 +326,51 @@ function changeCatTab(obj) {
     }
 }
 
+function changeTabCatPage(obj) {    
+    let incomesInCategory = document.getElementById('incomesInCategory');
+    let subCategoryTab = document.getElementById('subCategoryTab');
+    
+
+    if(!obj.classList.contains('tabActive')){
+
+        if(obj.id == 'incomesInCategory'){
+            incomesInCategory.classList.add('tabActive');
+            subCategoryTab.classList.remove('tabActive');
+
+            if($_GET('cat') == 'incomesubcategory'){
+                newGetParam = '?id=' + $_GET('id') + '&cat=incomecategory&filter=' + $_GET('filter');
+            }
+
+            if($_GET('cat') == 'expensesubcategory'){
+                newGetParam = '?id=' + $_GET('id') + '&cat=expensecategory&filter=' + $_GET('filter');
+            }
+        }
+        
+        if(obj.id == 'subCategoryTab'){
+            incomesInCategory.classList.remove('tabActive');
+            subCategoryTab.classList.add('tabActive');
+
+            if($_GET('cat') == 'incomecategory'){
+                newGetParam = '?id=' + $_GET('id') + '&cat=incomesubcategory&filter=' + $_GET('filter');
+            }
+
+            if($_GET('cat') == 'expensecategory'){
+                newGetParam = '?id=' + $_GET('id') + '&cat=expensesubcategory&filter=' + $_GET('filter');
+            } 
+        }        
+
+        if (history.pushState) {
+            var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            var newUrl = baseUrl + newGetParam;
+            history.pushState(null, null, newUrl);
+            document.location.reload();
+        }
+        else {
+            console.warn('History API не поддерживается');
+        }
+    }
+}
+
 function deleteCategory(catId, catTable, subCatTable, table) {
     let isDelete = confirm("Удалить категорию?");
     if(isDelete){    
@@ -335,7 +386,11 @@ function deleteCategory(catId, catTable, subCatTable, table) {
             success: function (response) {
                 result = jQuery.parseJSON(response);
                 alert(result['message']);
-                document.location.reload();
+                if(window.location.pathname == '/personal/category.php'){
+                    window.location = window.location.protocol + "//" + window.location.host + '/' + 'personal/categories.php?cat=' + catTable;
+                }else{
+                    document.location.reload();
+                }
             },
             error: function (response) {
                 alert('Ошибка');

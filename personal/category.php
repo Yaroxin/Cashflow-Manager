@@ -6,15 +6,32 @@
 ?>
 <?php 
     require "userDB.php"; 
-    require "../functions.php";  
-    $category = R::Load($_GET['cat'], $_GET['id']);
+    require "../functions.php"; 
+    
+    if ($_GET['cat'] == 'incomecategory' || $_GET['cat'] == 'incomesubcategory'){
+        $category = R::Load('incomecategory', $_GET['id']);
+        $catTitle = 'Категория доходов';
+        $tabTitle = 'Доходы по категории';
+        $backURL = 'categories.php?cat=incomecategory';
+    }    
+    if ($_GET['cat'] == 'expensecategory' || $_GET['cat'] == 'expensesubcategory'){
+        $category = R::Load('expensecategory', $_GET['id']);
+        $catTitle = 'Категория расходов';
+        $tabTitle = 'Расходы по категории';
+        $backURL = 'categories.php?cat=expensecategory';
+    }
+
     $filters = ['All', 'Year', 'Month', 'Week'];
 
     if($_GET['cat'] == 'incomecategory'){
         $table = 'income';
+        $subCategoryTable = 'incomesubcategory';
+        $catTitle = 'Категория доходов';        
     }
     if($_GET['cat'] == 'expensecategory'){
         $table = 'expense';
+        $subCategoryTable = 'expensesubcategory';
+        $catTitle = 'Категория расходов';        
     }
 ?>
 
@@ -31,18 +48,37 @@
 <body>  
     <div class="wrap">
         <div class="topBar">
-            <div class="topBarLeft"><a href="/">Назад</a></div>
+            <div class="topBarLeft"><a href="<?php echo $backURL; ?>">Назад</a></div>
             <div class="topBarCenter">Роман Ярохин</div>
             <div class="topBarRight"><a href="logout.php">Выход</a></div>
-        </div>
-
-        <div class="accBlock">
+        </div>        
+        <?php if($category['status'] != 2): ?>
+            <div class="accBlock">
+        <?php else: ?>
+            <div class="accBlock archive">
+        <?php endif; ?>
             <div class="accLogo">
                 <img src="img/coin.png" alt="Logo">
             </div>
-            <div class="accName"><?php echo $category['name']; ?></div>            
+            <div class="accName"><?php echo $category['name']; ?></div>
+            <div class="catStatus"><?php echo $catTitle; ?></div>
+            <?php if($category['status'] == 2): ?>
+                <div class="catStatus">В Архиве</div>
+            <?php endif; ?>
         </div>
 
+        <div class="tabs">
+            <?php if ($_GET['cat'] == 'incomecategory' || $_GET['cat'] == 'expensecategory'): ?>
+                <div id="incomesInCategory" class="tab tabActive" onclick="changeTabCatPage(this);"><?php echo $tabTitle; ?></div>
+                <div id="subCategoryTab" class="tab" onclick="changeTabCatPage(this);">Подкатегории</div>
+            <?php elseif($_GET['cat'] == 'incomesubcategory' || $_GET['cat'] == 'expensesubcategory' ): ?>
+                <div id="incomesInCategory" class="tab" onclick="changeTabCatPage(this);"><?php echo $tabTitle; ?></div>
+                <div id="subCategoryTab" class="tab tabActive" onclick="changeTabCatPage(this);">Подкатегории</div>
+            <?php endif; ?>
+        </div>
+
+
+        <?php if ($_GET['cat'] == 'incomecategory' || $_GET['cat'] == 'expensecategory'): ?>
         <div class="incomeFilter">
             <?php foreach($filters as $filter): ?>
                 <?php if($_GET['filter'] == $filter): ?>
@@ -52,7 +88,6 @@
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
-
         <div class="list">
             <?php
                 if($_GET['filter'] == 'All'){
@@ -98,25 +133,58 @@
                     <div class="incomeLine">Нет доходов</div>
                 <?php endif; ?>
             </div>
+            <div class="buttonsBlock">
+                <div class="button buttonCategory"><a href="editCategory.php?id=<?php echo $_GET['id']; ?>&cat=<?php echo $_GET['cat']; ?>">Изменить</a></div>
 
-
-
-        
-            <?php if($category['status'] == 0): ?>        
-            <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >Удалить категорию</div>
-            <?php endif; ?>
-            <?php if($category['status'] == 1): ?>        
-            <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >В архив</div>
-            <?php endif; ?>
-            <?php if($category['status'] == 2): ?>        
-            <div id="delAccount" class="delAccount" data-id="<?php echo $account['id']; ?>" data-status="<?php echo $account['status']; ?>" >Активировать</div>
-            <?php endif; ?>
-
-
-
-
-
+                <?php if($category['status'] == 0): ?>        
+                <div class="button buttonCategory" onclick="deleteCategory( '<?php echo $category['id']; ?>', '<?php echo $_GET['cat']; ?>', '<?php echo $subCategoryTable; ?>', '<?php echo $table; ?>' );" >Удалить</div>
+                <?php endif; ?>
+                <?php if($category['status'] == 1): ?>        
+                <div class="button buttonCategory" onclick="archCategory('<?php echo $category['id']; ?>', '<?php echo $_GET['cat']; ?>', '<?php echo $subCategoryTable; ?>');">В архив</div>
+                <?php endif; ?>
+                <?php if($category['status'] == 2): ?>
+                <div class="button buttonCategory" onclick="actCategory('<?php echo $category['id']; ?>', '<?php echo $_GET['cat']; ?>', '<?php echo $subCategoryTable; ?>', '<?php echo $table; ?>');">Активировать</div>
+                <?php endif; ?>
+            </div>
         </div>
+        <?php endif; ?>
+        <?php if ($_GET['cat'] == 'incomesubcategory' || $_GET['cat'] == 'expensesubcategory'): ?>
+            <?php
+                if($_GET['cat'] == 'incomesubcategory'){
+                    $subCategories = R::find($_GET['cat'], 'incomecategory_id = ?', [$_GET['id']] );
+                    $editURL = 'editCategory.php?id=' . $_GET['id'] . '&cat=incomecategory';
+                }
+                if($_GET['cat'] == 'expensesubcategory'){
+                    $subCategories = R::find($_GET['cat'], 'expensecategory_id = ?', [$_GET['id']] );
+                    $editURL = 'editCategory.php?id=' . $_GET['id'] . '&cat=expensecategory';
+                }                
+            ?>
+            <div class="categoriesList">
+                <?php if($subCategories): ?>
+                    <?php foreach($subCategories as $subCategory): ?>
+                        <div class="category">
+                            <div class="categoryCentralBlock">
+                                <div class="categoryName"><?php echo $subCategory['name']; ?></div>
+                            </div>
+                            <div class="categoryRightBlock">                                
+                                <div class="delCategory">
+                                    <img src="img/can.png" alt="delCategory">
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="incomeLine">Нет Подкатегорий</div>
+                <?php endif; ?>
+                <div class="buttonsBlock">
+                    <div class="button buttonCategory"><a href="<?php echo $editURL; ?>">Изменить</a></div>
+                    <div class="button buttonCategory">
+                        <a href="#">Добавить</a>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
     </div>
     <script type="text/javascript" src="../scripts/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>

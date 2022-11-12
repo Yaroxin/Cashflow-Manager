@@ -87,7 +87,7 @@
                         </div>
                         <?php else: ?>
                             <div class="category archiveCategory">
-                            <div class="categoryCentralBlock">
+                            <div class="categoryCentralBlock" onclick="window.location='category.php?id=<?php echo $category['id']; ?>&cat=<?php echo $_GET['cat']; ?>&filter=Month'">
                                 <div class="categoryName"><?php echo $category['name']; ?></div>
                                 <div class="subCategories">Подкатегории: <?php echo $subCategoryCount; ?></div>
                             </div>
